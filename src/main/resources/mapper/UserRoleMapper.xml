@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.login.mapper.UserRoleMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.login.bean.UserRole">
+        <id column="id" property="id" />
+        <result column="role_id" property="roleId" />
+        <result column="user_id" property="userId" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        role_id, user_id, id
+    </sql>
+
+
+
+
+    <select id="selectMyPage" resultMap="BaseResultMap">
+        select * from  tr_user_role  where 1=1
+        <if test="map.userRole.roleId!=null and map.userRole.roleId!='' ">
+                and role_id   like "%${map.userRole.roleId}%"
+        </if>
+        <if test="map.userRole.userId!=null and map.userRole.userId!='' ">
+                and user_id   like "%${map.userRole.userId}%"
+        </if>
+        <if test="map.userRole.id!=null and map.userRole.id!='' ">
+                and id   like "%${map.userRole.id}%"
+        </if>
+        limit #{map.page},#{map.limit}
+    </select>
+
+    <select id="countMyPage" resultType="int">
+        select count(*) from  tr_user_role  where 1=1
+        <if test="map.userRole.roleId!=null and map.userRole.roleId!='' ">
+            and role_id  like "%${map.userRole.roleId}%"
+        </if>
+        <if test="map.userRole.userId!=null and map.userRole.userId!='' ">
+            and user_id  like "%${map.userRole.userId}%"
+        </if>
+        <if test="map.userRole.id!=null and map.userRole.id!='' ">
+            and id  like "%${map.userRole.id}%"
+        </if>
+    </select>
+</mapper>

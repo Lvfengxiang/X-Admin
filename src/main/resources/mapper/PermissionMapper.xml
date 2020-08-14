@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.login.mapper.PermissionMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.login.bean.Permission">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="menu_url" property="menuUrl" />
+<!--        <result column="menu_lev" property="menuLev" />-->
+<!--        <result column="menu_class" property="menuClass" />-->
+        <result column="menu_type" property="menuType" />
+        <result column="parent_id" property="parentId" />
+        <result column="menu_order" property="menuOrder" />
+<!--        <result column="menu_path" property="menuPath" />-->
+<!--        <result column="menu_name" property="menuName" />-->
+        <result column="menu_icon" property="menuIcon" />
+<!--        <result column="menu_redirect" property="menuReirect" />-->
+        <result column="menu_code" property="menuCode" />
+        <result column="is_del" property="isDel" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, name, menu_url, menu_lev, menu_class, menu_type, parent_id, menu_order
+    </sql>
+
+
+
+
+    <select id="selectMyPage" resultMap="BaseResultMap">
+        select * from  tr_permission  where 1=1
+        <if test="map.permission.id!=null and map.permission.id!='' ">
+                and id   like "%${map.permission.id}%"
+        </if>
+        <if test="map.permission.name!=null and map.permission.name!='' ">
+                and name   like "%${map.permission.name}%"
+        </if>
+        <if test="map.permission.menuUrl!=null and map.permission.menuUrl!='' ">
+                and menu_url   like "%${map.permission.menuUrl}%"
+        </if>
+<!--        <if test="map.permission.menuLev!=null and map.permission.menuLev!='' ">-->
+<!--                and menu_lev   like "%${map.permission.menuLev}%"-->
+<!--        </if>-->
+<!--        <if test="map.permission.menuClass!=null and map.permission.menuClass!='' ">-->
+<!--                and menu_class   like "%${map.permission.menuClass}%"-->
+<!--        </if>-->
+        <if test="map.permission.menuType!=null and map.permission.menuType!='' ">
+                and menu_type   like "%${map.permission.menuType}%"
+        </if>
+        <if test="map.permission.parentId!=null and map.permission.parentId!='' ">
+                and parent_id   like "%${map.permission.parentId}%"
+        </if>
+        <if test="map.permission.menuOrder!=null and map.permission.menuOrder!='' ">
+                and menu_order   like "%${map.permission.menuOrder}%"
+        </if>
+        limit #{map.page},#{map.limit}
+    </select>
+
+    <select id="countMyPage" resultType="int">
+        select count(*) from  tr_permission  where 1=1
+        <if test="map.permission.id!=null and map.permission.id!='' ">
+            and id  like "%${map.permission.id}%"
+        </if>
+        <if test="map.permission.name!=null and map.permission.name!='' ">
+            and name  like "%${map.permission.name}%"
+        </if>
+        <if test="map.permission.menuUrl!=null and map.permission.menuUrl!='' ">
+            and menu_url  like "%${map.permission.menuUrl}%"
+        </if>
+<!--        <if test="map.permission.menuLev!=null and map.permission.menuLev!='' ">-->
+<!--            and menu_lev  like "%${map.permission.menuLev}%"-->
+<!--        </if>-->
+<!--        <if test="map.permission.menuClass!=null and map.permission.menuClass!='' ">-->
+<!--            and menu_class  like "%${map.permission.menuClass}%"-->
+<!--        </if>-->
+        <if test="map.permission.menuType!=null and map.permission.menuType!='' ">
+            and menu_type  like "%${map.permission.menuType}%"
+        </if>
+        <if test="map.permission.parentId!=null and map.permission.parentId!='' ">
+            and parent_id  like "%${map.permission.parentId}%"
+        </if>
+        <if test="map.permission.menuOrder!=null and map.permission.menuOrder!='' ">
+            and menu_order  like "%${map.permission.menuOrder}%"
+        </if>
+    </select>
+
+    <select id="getRouteInfo" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT
+            *
+        FROM
+            tr_permission
+        WHERE
+            id IN (
+            SELECT
+                m_id
+            FROM
+                tr_role_permission
+            WHERE
+                r_id IN (
+                SELECT
+                    role_id
+                FROM
+                    tr_user_role
+            WHERE
+            user_id IN ( SELECT id FROM tr_user WHERE id = #{userId} )))
+    </select>
+
+    <select id="permissionInfo" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from tr_permission where find_in_set(id,#{ids})
+    </select>
+</mapper>

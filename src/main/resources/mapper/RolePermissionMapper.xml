@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.login.mapper.RolePermissionMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.login.bean.RolePermission">
+        <id column="id" property="id" />
+        <result column="r_id" property="rId" />
+        <result column="m_id" property="mId" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, r_id, m_id
+    </sql>
+
+
+
+
+    <select id="selectMyPage" resultMap="BaseResultMap">
+        select * from  tr_role_permission  where 1=1
+        <if test="map.rolePermission.id!=null and map.rolePermission.id!='' ">
+                and id   like "%${map.rolePermission.id}%"
+        </if>
+        <if test="map.rolePermission.rId!=null and map.rolePermission.rId!='' ">
+                and r_id   like "%${map.rolePermission.rId}%"
+        </if>
+        <if test="map.rolePermission.mId!=null and map.rolePermission.mId!='' ">
+                and m_id   like "%${map.rolePermission.mId}%"
+        </if>
+        limit #{map.page},#{map.limit}
+    </select>
+
+    <select id="countMyPage" resultType="int">
+        select count(*) from  tr_role_permission  where 1=1
+        <if test="map.rolePermission.id!=null and map.rolePermission.id!='' ">
+            and id  like "%${map.rolePermission.id}%"
+        </if>
+        <if test="map.rolePermission.rId!=null and map.rolePermission.rId!='' ">
+            and r_id  like "%${map.rolePermission.rId}%"
+        </if>
+        <if test="map.rolePermission.mId!=null and map.rolePermission.mId!='' ">
+            and m_id  like "%${map.rolePermission.mId}%"
+        </if>
+    </select>
+</mapper>

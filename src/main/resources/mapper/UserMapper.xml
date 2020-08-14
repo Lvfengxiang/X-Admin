@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.login.mapper.UserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.login.bean.User">
+        <id column="id" property="id" />
+        <result column="user_name" property="userName" />
+        <result column="company_name" property="companyName" />
+        <result column="email" property="email" />
+        <result column="phone" property="phone" />
+        <result column="pass_word" property="passWord" />
+        <result column="relacation_shops" property="relacationShops" />
+    </resultMap>
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="LoginResultMap" type="com.login.bean.User">
+        <id column="id" property="id" />
+        <result column="user_name" property="userName" />
+        <result column="company_name" property="companyName" />
+        <result column="email" property="email" />
+        <result column="phone" property="phone" />
+        <result column="pass_word" property="passWord" />
+        <!--角色映射-->
+        <association property="role" javaType="com.login.bean.Role">
+            <id column="roleId" property="id" />
+            <result column="role_name" property="roleName" />
+            <result column="role_value" property="roleValue" />
+            <result column="create_time" property="createTime" />
+            <result column="details" property="details" />
+            <result column="user_id" property="userId" />
+            <!--映射菜单集合-->
+            <collection property="permissions" column="id"  ofType="com.login.bean.Permission">
+                <id property="id" column="menuId" />
+                <result column="name" property="name" />
+                <result column="menu_url" property="menuUrl" />
+                <result column="menu_lev" property="menuLev" />
+                <result column="menu_class" property="menuClass" />
+                <result column="menu_type" property="menuType" />
+                <result column="parent_id" property="parentId" />
+                <result column="menu_order" property="menuOrder" />
+            </collection>
+        </association>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, user_name, company_name, email, phone, pass_word
+    </sql>
+
+
+
+
+    <select id="selectMyPage" resultMap="BaseResultMap">
+        select * from  tr_user  where 1=1
+        <if test="map.user.id!=null and map.user.id!='' ">
+                and id   like "%${map.user.id}%"
+        </if>
+        <if test="map.user.userName!=null and map.user.userName!='' ">
+                and user_name   like "%${map.user.userName}%"
+        </if>
+        <if test="map.user.companyName!=null and map.user.companyName!='' ">
+                and company_name   like "%${map.user.companyName}%"
+        </if>
+        <if test="map.user.email!=null and map.user.email!='' ">
+                and email   like "%${map.user.email}%"
+        </if>
+        <if test="map.user.phone!=null and map.user.phone!='' ">
+                and phone   like "%${map.user.phone}%"
+        </if>
+        <if test="map.user.passWord!=null and map.user.passWord!='' ">
+                and pass_word   like "%${map.user.passWord}%"
+        </if>
+         order by id desc
+        limit #{map.page},#{map.limit}
+    </select>
+
+    <select id="countMyPage" resultType="int">
+        select count(*) from  tr_user  where 1=1
+        <if test="map.user.id!=null and map.user.id!='' ">
+            and id  like "%${map.user.id}%"
+        </if>
+        <if test="map.user.userName!=null and map.user.userName!='' ">
+            and user_name  like "%${map.user.userName}%"
+        </if>
+        <if test="map.user.companyName!=null and map.user.companyName!='' ">
+            and company_name  like "%${map.user.companyName}%"
+        </if>
+        <if test="map.user.email!=null and map.user.email!='' ">
+            and email  like "%${map.user.email}%"
+        </if>
+        <if test="map.user.phone!=null and map.user.phone!='' ">
+            and phone  like "%${map.user.phone}%"
+        </if>
+        <if test="map.user.passWord!=null and map.user.passWord!='' ">
+            and pass_word  like "%${map.user.passWord}%"
+        </if>
+    </select>
+
+
+
+</mapper>

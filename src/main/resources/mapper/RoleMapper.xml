@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.login.mapper.RoleMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.login.bean.Role">
+        <id column="id" property="id" />
+        <result column="role_name" property="roleName" />
+        <result column="role_value" property="roleValue" />
+        <result column="create_time" property="createTime" />
+        <result column="details" property="details" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, role_name, role_value, create_time, details, user_id
+    </sql>
+
+
+
+
+    <select id="selectMyPage" resultMap="BaseResultMap">
+        select * from  tr_role  where 1=1
+        <if test="map.role.id!=null and map.role.id!='' ">
+                and id   like "%${map.role.id}%"
+        </if>
+        <if test="map.role.roleName!=null and map.role.roleName!='' ">
+                and role_name   like "%${map.role.roleName}%"
+        </if>
+        <if test="map.role.roleValue!=null and map.role.roleValue!='' ">
+                and role_value   like "%${map.role.roleValue}%"
+        </if>
+        <if test="map.role.createTime!=null and map.role.createTime!='' ">
+                and create_time   like "%${map.role.createTime}%"
+        </if>
+        <if test="map.role.details!=null and map.role.details!='' ">
+                and details   like "%${map.role.details}%"
+        </if>
+        <if test="map.role.userId!=null and map.role.userId!='' ">
+                and user_id   like "%${map.role.userId}%"
+        </if>
+        limit #{map.page},#{map.limit}
+    </select>
+
+    <select id="countMyPage" resultType="int">
+        select count(*) from  tr_role  where 1=1
+        <if test="map.role.id!=null and map.role.id!='' ">
+            and id  like "%${map.role.id}%"
+        </if>
+        <if test="map.role.roleName!=null and map.role.roleName!='' ">
+            and role_name  like "%${map.role.roleName}%"
+        </if>
+        <if test="map.role.roleValue!=null and map.role.roleValue!='' ">
+            and role_value  like "%${map.role.roleValue}%"
+        </if>
+        <if test="map.role.createTime!=null and map.role.createTime!='' ">
+            and create_time  like "%${map.role.createTime}%"
+        </if>
+        <if test="map.role.details!=null and map.role.details!='' ">
+            and details  like "%${map.role.details}%"
+        </if>
+        <if test="map.role.userId!=null and map.role.userId!='' ">
+            and user_id  like "%${map.role.userId}%"
+        </if>
+    </select>
+</mapper>
